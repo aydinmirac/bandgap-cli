@@ -5,7 +5,7 @@ from tqdm import tqdm
 import glob
 
 # Extract OMDB database from scratch if necessary
-def extractOMDB():
+def extract_omdb():
 
     # Create folder to store cif files
     #os.makedirs("./omdb_cifs", exist_ok=True)

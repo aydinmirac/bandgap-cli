@@ -1,4 +1,4 @@
-from omdb import *
+from functions import *
 
 # Extract OMDB dataset. (put cli option because it is not always necessary)
-extractOMDB()
+extract_omdb()
