@@ -1,34 +1,46 @@
-from ase.io import read, write
-import numpy as np
+#from ase.io import read, write
+#import numpy as np
+#import os
+#from tqdm import tqdm
+#import glob
+
+# Bandgap manipulation and data appending
+import csv
 import os
-from tqdm import tqdm
-import glob
+import random
 
-# Extract OMDB database from scratch if necessary
-def extract_omdb():
+# Input and output files
+input_file = 'data-manipulation/id.csv'
+output_file = 'data-manipulation/modified_file.csv'
 
-    # Create folder to store cif files
-    #os.makedirs("./omdb_cifs", exist_ok=True)
+# Keywords to identify files for band gap adjustment
+keywords = ['perturbed', 'rotated', 'translate', 'swapaxes']
 
-    # Change directory to datasets/omdb
-    os.chdir('datasets/omdb')
+# Randomize bandgap assignment after augmentation
+def adjust_bandgap(bandgap):
+    new_gap = str(round(random.uniform(float(bandgap) - 0.20, float(bandgap) + 0.20),6))
+    return new_gap
 
-    # Read the structure file including all molecules
-    materials = read('structures.xyz', index=':')
-
-    # Read the bandgap information
-    bandgaps = np.loadtxt('bandgaps.csv', dtype=float)
-
-    # Read the COD database file
-    cods = np.loadtxt('CODids.csv', dtype=int)
-
+# Manipulate the CSV files and create a new one
+def process_csv(input_file, output_file):
+    with open(input_file, 'r') as csvfile:
+        reader = csv.reader(csvfile)
+        data = list(reader)
     
-    # Convert structures to cif files
-    for idx in tqdm(range(len(materials))):
-        write(f"{cods[idx]}.cif", materials[idx])
+    modified_data = []
 
-    # Save COD ID and bandgap information to csv file
-    np.savetxt("id_prop.csv",
-            np.array(list(zip(cods.astype(float), bandgaps.astype(float)))),
-            delimiter=',', fmt=["%i", "%f"])
+    for row in data:
+        filename, bandgap = row
+        modified_bandgap = bandgap
+
+        for keyword in keywords:
+            if keyword in filename:
+                modified_bandgap = adjust_bandgap(bandgap)
+        
+        modified_data.append([filename, modified_bandgap])
     
+    with open(output_file, 'w', newline='') as csvfile:
+        writer = csv.writer(csvfile)
+        writer.writerows(modified_data)
+
+process_csv(input_file, output_file)
