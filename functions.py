@@ -9,9 +9,12 @@ import csv
 import os
 import random
 
-# Input and output files
-input_file = 'data-manipulation/id.csv'
-output_file = 'data-manipulation/modified_file.csv'
+
+###############################
+# *************************** #
+#  DATA AND CSV MANIPULATION  #
+###############################
+# *************************** #
 
 # Keywords to identify files for band gap adjustment
 keywords = ['perturbed', 'rotated', 'translate', 'swapaxes']
@@ -43,4 +46,3 @@ def process_csv(input_file, output_file):
         writer = csv.writer(csvfile)
         writer.writerows(modified_data)
 
-process_csv(input_file, output_file)
