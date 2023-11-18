@@ -1,4 +1,5 @@
-auglichem/
 datasets/
 venv/
+.vscode/
+__pycache__/
 Notes.txt
