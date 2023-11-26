@@ -1,7 +1,38 @@
-from functions import *
+import subprocess
+import typer
+import os
+from utils import copy_files, edit_csv_files
 
-# Input and output files
-input_file = 'data-manipulation/id.csv'
-output_file = 'data-manipulation/modified_file.csv'
+#Create the app
+app = typer.Typer()
 
-process_csv(input_file, output_file)
+@app.command()
+def copy_data():
+    """
+    The command copies your molecules to SchNetPack and ALIGNN data directories.
+    """
+    source_dir = './data_copy/test'
+    destination_dir = './data_copy/destination'
+    source_csv = './data_copy/test/id_prop.csv'
+    destination_csv = './data_copy/destination/id_prop.csv'
+    copy_files(source_dir, destination_dir)
+    edit_csv_files(source_csv, destination_csv) 
+
+@app.command()
+def train_schnet():
+    pass
+
+@app.command()
+def test_schnet():
+    pass
+
+@app.command()
+def train_alignn():
+    subprocess.run(["./alignn/train.sh"])
+
+@app.command()
+def test_alignn():
+    pass
+
+if __name__ == "__main__":
+    app()
