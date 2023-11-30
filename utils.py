@@ -51,15 +51,4 @@ def edit_csv_files(source_csv, destination_csv):
                     destination_writer = csv.writer(destination_file)
                     destination_writer.writerow(row)
 
-"""
-# Get the source and target directories
-source_dir = './data-import/test'
-destination_dir = './data-import/destination'
 
-# CSV files
-source_csv = './data-import/test/id_prop.csv'
-destination_csv = './data-import/destination/id_prop.csv'
-
-copy_files(source_dir, destination_dir)
-edit_csv_files(source_csv, destination_csv)
-"""

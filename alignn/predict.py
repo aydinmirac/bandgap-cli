@@ -36,7 +36,6 @@ parser.add_argument(
     + ", usually 8 for solids and 5 for molecules.",
 )
 
-
 device = "cpu"
 if torch.cuda.is_available():
     device = torch.device("cuda")

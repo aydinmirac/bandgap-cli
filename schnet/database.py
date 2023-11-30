@@ -4,14 +4,13 @@ import numpy as np
 import csv
 import os
 from schnetpack.data import ASEAtomsData
-import random
 from tqdm import tqdm
 
 # Main code
 start = time.time()
 
-cif_dir = "../datasets/schnet"
-csv_file = "../datasets/schnet/id_prop.csv"
+cif_dir = "./datasets/schnet"
+csv_file = "./datasets/schnet/id_prop.csv"
 
 # Define a function to read the CSV file containing molecule IDs and bandgaps
 def read_bandgap_data():
@@ -21,8 +20,6 @@ def read_bandgap_data():
         for row in csvreader:
             rows.append(row)
     return rows
-
-
 
 # Define a function to create a list of CIF
 def get_cif_file_list(directory):
@@ -53,6 +50,7 @@ def create_ase_atoms_and_properties(directory):
     pbar.close()
     return atoms, property_list
 
+
 atoms, property_list = create_ase_atoms_and_properties(cif_dir)
 
 end = time.time()
@@ -60,7 +58,7 @@ print("Time elapsed:", end - start, "seconds")
 
 print("Length of atoms:", len(atoms), "and gap values:", len(property_list))
 
-new_dataset = ASEAtomsData.create('./omdb_augmented_2023.db', distance_unit='Ang', property_unit_dict={'band_gap':'eV'})
+new_dataset = ASEAtomsData.create('./schnet/omdb_augmented_2023.db', distance_unit='Ang', property_unit_dict={'band_gap':'eV'})
 new_dataset.add_systems(property_list, atoms)
 
 print('Number of reference calculations:', len(new_dataset))
