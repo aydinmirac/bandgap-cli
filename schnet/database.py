@@ -9,8 +9,8 @@ from tqdm import tqdm
 # Main code
 start = time.time()
 
-cif_dir = "./datasets/schnet"
-csv_file = "./datasets/schnet/id_prop.csv"
+cif_dir = "./datasets/main"
+csv_file = "./datasets/main/id_prop.csv"
 
 # Define a function to read the CSV file containing molecule IDs and bandgaps
 def read_bandgap_data():
@@ -58,7 +58,7 @@ print("Time elapsed:", end - start, "seconds")
 
 print("Length of atoms:", len(atoms), "and gap values:", len(property_list))
 
-new_dataset = ASEAtomsData.create('./schnet/omdb_augmented_2023.db', distance_unit='Ang', property_unit_dict={'band_gap':'eV'})
+new_dataset = ASEAtomsData.create('./schnet/all_molecules.db', distance_unit='Ang', property_unit_dict={'band_gap':'eV'})
 new_dataset.add_systems(property_list, atoms)
 
 print('Number of reference calculations:', len(new_dataset))

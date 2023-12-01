@@ -4,7 +4,7 @@ from typing_extensions import Annotated
 import os
 import json
 import time
-from utils import copy_files, edit_csv_files
+from utils import copy_files, edit_csv_files, edit_json_file
 
 #Create the app
 app = typer.Typer()
@@ -28,6 +28,7 @@ def extract_dataset():
     """
     This command extracts necessary dataset for both ALIGNN and SchNetPack.
     """
+    subprocess.run(["./datasets/extract.sh"], check=True)
 
 @app.command()
 def train_schnet():
@@ -48,10 +49,10 @@ def copy_data():
     """
     This command copies your molecules to SchNetPack and ALIGNN data directories.
     """
-    source_dir = './data_copy/test'
-    destination_dir = './data_copy/destination'
-    source_csv = './data_copy/test/id_prop.csv'
-    destination_csv = './data_copy/destination/id_prop.csv'
+    source_dir = './copy-data/'
+    destination_dir = './datasets/main'
+    source_csv = './copy-data/id_prop.csv'
+    destination_csv = './datasets/main/id_prop.csv'
     copy_files(source_dir, destination_dir)
     edit_csv_files(source_csv, destination_csv) 
 
@@ -76,32 +77,15 @@ def train_alignn(n_val: Annotated[int, typer.Argument(help="The size of validati
     """
     This command starts a training process by using ALIGNN model.
     """
-    # Open json file for ALIGNN
-    with open('./alignn/config.json', 'r') as f:
-        config_data = json.load(f)
-
-    # Update the key-value pairs with the provided arguments
-    config_data['n_val'] = n_val
-    config_data['n_test'] = n_test
-    config_data['n_train'] = n_train
-    config_data['epochs'] = epochs
-    config_data['batch_size'] = batch_size
-    config_data['learning_rate'] = learning_rate
-    config_data['num_workers'] = num_workers
-    config_data['cutoff'] = cutoff
-    config_data['max_neighbors'] = max_neighbors
-
-    # Open the JSON file in write mode and dump the updated data
-    with open('./alignn/config.json', 'w') as f:
-        json.dump(config_data, f, indent=4)
-    
+    # Edit JSON file for ALIGNN training
+    edit_json_file(n_val, n_test, n_train, epochs, batch_size, learning_rate, num_workers, cutoff, max_neighbors)
     # Start training process
     subprocess.run(["./alignn/train.sh"])
 
 @app.command()
 def test_alignn(best_model: Annotated[str, typer.Argument(help="The path of best model from your last training, stored in the last output folder as best_model.pt")],
                 file_format: Annotated[str, typer.Argument(help="The file format, currently only cif supported")] = "cif",
-                molecule_path: Annotated[str, typer.Argument(help="The path of your test molecule, please store it under 'predictions' folder")] = 100,
+                molecule_path: Annotated[str, typer.Argument(help="The path of your test molecule, please store it under 'predictions' folder")] = "./predictions/1008775.cif",
                 cutoff: Annotated[str, typer.Argument(help="The size of validation set")] = "5.0"):
     """
     This command predicts the bandgap of a single molecule with the trained ALIGNN model.

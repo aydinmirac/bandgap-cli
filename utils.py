@@ -1,6 +1,7 @@
 import os
 import csv
 import shutil
+import json
 
 # Copy molecules from data_copy to datasets folder
 def copy_files(source_dir, destination_dir):
@@ -51,4 +52,23 @@ def edit_csv_files(source_csv, destination_csv):
                     destination_writer = csv.writer(destination_file)
                     destination_writer.writerow(row)
 
+def edit_json_file(n_val, n_test, n_train, epochs, batch_size, learning_rate, num_workers, cutoff, max_neighbors):
 
+    # Open json file for ALIGNN
+    with open('./alignn/config.json', 'r') as f:
+        config_data = json.load(f)
+
+    # Update the key-value pairs with the provided arguments
+    config_data['n_val'] = n_val
+    config_data['n_test'] = n_test
+    config_data['n_train'] = n_train
+    config_data['epochs'] = epochs
+    config_data['batch_size'] = batch_size
+    config_data['learning_rate'] = learning_rate
+    config_data['num_workers'] = num_workers
+    config_data['cutoff'] = cutoff
+    config_data['max_neighbors'] = max_neighbors
+
+    # Open the JSON file in write mode and dump the updated data
+    with open('./alignn/config.json', 'w') as f:
+        json.dump(config_data, f, indent=4)
