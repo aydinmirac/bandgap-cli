@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Source the ALIGNN venv
 source ./alignn/venv/bin/activate
@@ -16,7 +16,7 @@ file_path=$3
 cutoff=$4
 
 # Start testing
-python ./alignn/predict.py --checkpoint_file $best_model --file_format $file_format --file_path $file_path --cutoff $cutoff > ./predictions/prediction_$current_date.txt
+python ./alignn/predict.py --checkpoint_file $best_model --file_format $file_format --file_path $file_path --cutoff $cutoff > ./predictions/alignn_result_$current_date.txt
 
 # Deactivate the environment
 deactivate

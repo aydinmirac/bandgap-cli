@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/bash
 
 # Source the ALIGNN venv
 source ./alignn/venv/bin/activate
@@ -10,7 +10,7 @@ export PATH=$PATH:./alignn/main/alignn:./alignn/main/alignn/scripts
 current_date=$(date +"%Y-%m-%d_%H:%M:%S")
 
 # Start training
-train_folder.py --root_dir ./datasets/alignn --file_format cif --config ./alignn/config.json --output_dir=./alignn/output_$current_date
+train_folder.py --root_dir ./datasets/main --file_format cif --config ./alignn/config.json --output_dir=./alignn/results_$current_date
 
 # Deactivate the environment
 deactivate

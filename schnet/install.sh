@@ -1,10 +1,10 @@
-#!/bin/zsh
+#!/bin/bash
 
-# Create virtual env for ALIGNN
+# Create virtual env for SchNetPack
 python3 -m venv ./schnet/venv
 
 # activate virtual env
 source ./schnet/venv/bin/activate
 
-# install ALIGNN
+# install SchNetPack
 pip install schnetpack
